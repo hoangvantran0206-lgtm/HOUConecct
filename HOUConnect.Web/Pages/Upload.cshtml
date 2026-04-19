@@ -1,0 +1,18 @@
+﻿@page
+@model HOUConnect.Web.Pages.UploadModel
+@{
+    <form method="post" enctype="multipart/form-data">
+        <input type="text" asp-for="SongName" placeholder="Tên bài hát..." />
+
+        <select asp-for="SelectedGenreID">
+            <option value="0">-- Chọn thể loại --</option>
+            @foreach (var g in Model.Genres)
+            {
+                <option value="@g.GenreID">@g.GenreName</option>
+            }
+        </select>
+
+        <input type="file" asp-for="MusicFile" accept=".mp3" />
+        <button type="submit">Tải lên ngay</button>
+    </form>
+}

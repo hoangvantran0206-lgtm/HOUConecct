@@ -1,0 +1,153 @@
+﻿/* Tổng thể giao diện Dark Mode */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar bên trái */
+.admin-sidebar {
+    width: 250px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-right: 1px solid #333;
+}
+
+    .admin-sidebar h3 {
+        color: #00bcd4; /* Màu xanh thương hiệu HOU */
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .admin-sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .admin-sidebar li {
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+        .admin-sidebar li.active, .admin-sidebar li:hover {
+            background-color: #2c2c2c;
+        }
+
+    .admin-sidebar a {
+        color: #bbb;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .admin-sidebar li.active a {
+        color: #fff;
+    }
+
+/* Nội dung chính bên phải */
+.admin-content {
+    flex-grow: 1;
+    padding: 30px;
+}
+
+.header-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Ô tìm kiếm */
+.search-box {
+    display: flex;
+    background: #242424;
+    border-radius: 20px;
+    padding: 5px 15px;
+    border: 1px solid #444;
+}
+
+    .search-box input {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 8px;
+        outline: none;
+    }
+
+    .search-box button {
+        background: transparent;
+        border: none;
+        color: #888;
+    }
+
+/* Bảng danh sách chuẩn HOU-Connect */
+.hou-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+    .hou-table th {
+        color: #888;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 10px 20px;
+    }
+
+    .hou-table tbody tr {
+        background-color: #1e1e1e;
+        transition: 0.2s;
+    }
+
+        .hou-table tbody tr:hover {
+            background-color: #252525;
+        }
+
+    .hou-table td {
+        padding: 15px 20px;
+    }
+
+/* Badge trạng thái */
+.badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.bg-online {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.bg-offline {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+/* Nút bấm hành động */
+.btn-action {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-lock {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-unlock {
+    background-color: #4caf50;
+    color: white;
+}

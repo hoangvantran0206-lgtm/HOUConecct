@@ -1,0 +1,58 @@
+﻿@page
+@model HOUConnect.Web.Pages.UserManagementModel
+@{
+    <link rel="stylesheet" href="~/css/admin.css" />
+    <div class="admin-wrapper">
+    <nav class="admin-sidebar">
+        <h3 class="brand">HOU-Admin</h3>
+        <ul>
+            <li class="active"><a href="#">👥 Quản lý User</a></li>
+            <li><a href="#">🎵 Quản lý bài hát</a></li>
+        </ul>
+    </nav>
+
+    <main class="admin-content">
+        <div class="header-action">
+            <h2>Danh sách thành viên</h2>
+            <form method="get" class="search-box">
+                <input type="text" name="search" placeholder="Tìm tên, email..." value="@Model.CurrentSearch" />
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+
+        <table class="hou-table">
+            <thead>
+                <tr>
+                    <th>NGƯỜI DÙNG</th>
+                    <th>TRẠNG THÁI</th>
+                    <th>NGÀY THAM GIA</th>
+                    <th>THAO TÁC</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users) {
+                    <tr>
+                        <td>
+                            <strong>@user.FullName</strong><br />
+                            <small>@user.Email</small>
+                        </td>
+                        <td>
+                            <span class="badge @(user.Status == 1 ? "bg-online" : "bg-offline")">
+                                @(user.Status == 1 ? "Hoạt động" : "Bị khóa")
+                            </span>
+                        </td>
+                        <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@user.UserID">
+                                <button class="btn-action @(user.Status == 1 ? "btn-lock" : "btn-unlock")">
+                                    @(user.Status == 1 ? "Khóa" : "Mở khóa")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </main>
+</div>
+}

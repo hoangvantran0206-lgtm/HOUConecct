@@ -1,0 +1,77 @@
+﻿@page
+@model HOUConnect.Web.Pages.RegisterModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tham gia HOU-Connect</title>
+    <link rel="stylesheet" href="~/css/auth.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <div class="auth-info">
+            <div class="brand">HOU-Connect</div>
+            <h1>Tham gia để bắt đầu hành trình âm nhạc</h1>
+        </div>
+
+        <div class="auth-form-container">
+            <div class="auth-card">
+                <h2>Create an account</h2>
+
+                <button class="btn-google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" alt="Google">
+                    Sign up with Google
+                </button>
+
+                <div class="divider"><span>Or</span></div>
+
+                <form method="post">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" asp-for="FullName" placeholder="Nhập họ và tên của bạn" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" asp-for="Email" placeholder="balamla@hou.edu.vn" required />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label>Password</label>
+                            <a href="#" class="forgot-link">Forgot?</a>
+                        </div>
+                        <div class="password-wrapper">
+                            <input type="password" asp-for="Password" id="regPass" placeholder="Enter your password" required />
+                            <i class="fa-regular fa-eye" onclick="togglePass('regPass')"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Create account</button>
+
+                    <p class="auth-footer">
+                        Already Have An Account? <a href="/Login">Log In</a>
+                    </p>
+
+                    @if (ViewData["ErrorMessage"] != null)
+                    {
+                        <div class="error-msg">@ViewData["ErrorMessage"]</div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePass(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>
