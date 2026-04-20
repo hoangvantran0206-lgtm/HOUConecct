@@ -108,3 +108,18 @@ AS
 BEGIN
     SELECT * FROM tbl_Users WHERE PK_iUserID = @iUserID;
 END
+--thủ tục lấy tất cả bài hát 
+CREATE PROCEDURE sp_GetAllSongs
+AS
+BEGIN
+    SELECT 
+        s.PK_iSongID, 
+        s.sSongName, 
+        s.sFileUrl, 
+        u.sFullName AS UploaderName, -- Lấy tên người đăng từ bảng Users
+        s.dUploadDate
+    FROM tbl_Songs s
+    INNER JOIN tbl_Users u ON s.FK_iUserID = u.PK_iUserID
+    WHERE s.iStatus = 1 -- Chỉ lấy những bài hát đang hoạt động
+    ORDER BY s.dUploadDate DESC;
+END
