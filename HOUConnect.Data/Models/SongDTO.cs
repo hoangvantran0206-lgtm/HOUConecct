@@ -18,7 +18,12 @@ namespace HOUConnect.Data.Models
         public int UserID { get; set; }
         public DateTime UploadDate { get; set; }
         public int Status { get; set; }
+    
+        public string FullName { get; set; } = string.Empty; // Để hiện tên người upload
+         
+        public DateTime CreatedAt { get; set; }
     }
+    
 
     // Class bổ trợ cho việc lấy danh sách Thể loại đổ vào Dropdown
     public class GenreDTO

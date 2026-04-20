@@ -24,4 +24,9 @@ public class SongDAL
         };
         return _sqlHelper.ExecuteNonQuery("sp_InsertSong", paras) > 0;
     }
+    public DataTable GetAllSongs()
+    {
+        // Không cần tham số vì chúng ta lấy tất cả bài hát công khai
+        return _sqlHelper.ExecuteQuery("sp_GetAllSongs", null);
+    }
 }

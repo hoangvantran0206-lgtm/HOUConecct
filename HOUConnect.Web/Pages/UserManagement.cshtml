@@ -1,26 +1,28 @@
 ﻿@page
 @model HOUConnect.Web.Pages.UserManagementModel
 @{
-    <link rel="stylesheet" href="~/css/admin.css" />
-    <div class="admin-wrapper">
-    <nav class="admin-sidebar">
-        <h3 class="brand">HOU-Admin</h3>
-        <ul>
-            <li class="active"><a href="#">👥 Quản lý User</a></li>
-            <li><a href="#">🎵 Quản lý bài hát</a></li>
-        </ul>
-    </nav>
+    // Dùng chung Layout chính để có Thanh nhạc và Sidebar tổng
+    Layout = "_Layout";
+    ViewData["Title"] = "Quản lý người dùng";
+}
 
-    <main class="admin-content">
-        <div class="header-action">
-            <h2>Danh sách thành viên</h2>
-            <form method="get" class="search-box">
-                <input type="text" name="search" placeholder="Tìm tên, email..." value="@Model.CurrentSearch" />
-                <button type="submit">🔍</button>
-            </form>
+<div class="admin-page-container">
+    <div class="admin-sub-header">
+        <div class="admin-nav-tabs">
+            <a href="/Admin/UserManagement" class="tab-item active">👥 Quản lý User</a>
+            <a href="/Admin/SongManagement" class="tab-item">🎵 Quản lý bài hát</a>
         </div>
 
-        <table class="hou-table">
+        <form method="get" class="admin-search-bar">
+            <input type="text" name="search" placeholder="Tìm tên, email..." value="@Model.CurrentSearch" />
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+    <div class="admin-table-section">
+        <h2 class="section-title">Danh sách thành viên</h2>
+
+        <table class="hou-admin-table">
             <thead>
                 <tr>
                     <th>NGƯỜI DÙNG</th>
@@ -30,21 +32,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var user in Model.Users) {
+                @foreach (var user in Model.Users)
+                {
                     <tr>
                         <td>
-                            <strong>@user.FullName</strong><br />
-                            <small>@user.Email</small>
+                            <div class="user-info-cell">
+                                <div class="user-avatar-mini"></div>
+                                <div class="user-text">
+                                    <span class="user-fullname">@user.FullName</span>
+                                    <span class="user-email">@user.Email</span>
+                                </div>
+                            </div>
                         </td>
                         <td>
-                            <span class="badge @(user.Status == 1 ? "bg-online" : "bg-offline")">
+                            <span class="status-badge @(user.Status == 1 ? "status-active" : "status-locked")">
                                 @(user.Status == 1 ? "Hoạt động" : "Bị khóa")
                             </span>
                         </td>
                         <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
                         <td>
                             <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@user.UserID">
-                                <button class="btn-action @(user.Status == 1 ? "btn-lock" : "btn-unlock")">
+                                <button class="btn-toggle @(user.Status == 1 ? "btn-lock" : "btn-unlock")">
+                                    <i class="fa-solid @(user.Status == 1 ? "fa-user-slash" : "fa-user-check")"></i>
                                     @(user.Status == 1 ? "Khóa" : "Mở khóa")
                                 </button>
                             </form>
@@ -53,6 +62,5 @@
                 }
             </tbody>
         </table>
-    </main>
+    </div>
 </div>
-}

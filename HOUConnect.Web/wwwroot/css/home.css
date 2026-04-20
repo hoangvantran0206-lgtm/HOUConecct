@@ -1,0 +1,584 @@
+﻿/* RESET & CORE */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #000;
+    color: white;
+    overflow: hidden;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-body {
+    display: flex; /* Sidebar và Main content nằm ngang */
+    flex: 1;
+    overflow: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #000;
+    border-right: 1px solid #282828;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 15px;
+}
+
+.user-identity {
+    display: flex; /* Kích hoạt Flexbox */
+    flex-direction: column; /* Ép các thành phần (Avatar, Tên, Nút) xếp dọc */
+    align-items: center; /* Căn giữa tất cả theo chiều ngang */
+    margin-bottom: 30px;
+    gap: 8px; /* Tạo khoảng cách nhỏ giữa Tên và Nút Đăng xuất */
+}
+
+.avatar-circle {
+    width: 90px;
+    height: 90px;
+    background: #333;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+}
+
+.btn-login-hou {
+    display: inline-block;
+    background: #10b981; /* Xanh lá HOU */
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transition: 0.3s;
+}
+
+    .btn-login-hou:hover {
+        transform: scale(1.05);
+        background: #059669;
+    }
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #b3b3b3;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+    .nav-link:hover, .nav-link.active {
+        color: white;
+        background: #1a1a1a;
+    }
+
+.admin-tag {
+    color: #fbbf24;
+    border-top: 1px solid #333;
+    margin-top: 20px;
+}
+
+/* MAIN VIEW */
+.main-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #1e1e1e, #121212);
+}
+
+.header-bar {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background: rgba(0,0,0,0.4);
+}
+
+.search-wrap {
+    background: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 350px;
+    display: flex;
+    align-items: center;
+}
+
+    .search-wrap input {
+        background: transparent;
+        border: none;
+        color: white;
+        margin-left: 10px;
+        outline: none;
+        width: 100%;
+    }
+
+.brand-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #10b981;
+}
+
+.scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 40px 120px 40px;
+}
+
+/* PLAYER BAR */
+.player-bar {
+    height: 95px;
+    background: #000;
+    border-top: 1px solid #282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    z-index: 100;
+}
+
+.playback-btns {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 18px;
+    color: #b3b3b3;
+}
+
+.play-main {
+    font-size: 35px;
+    color: white;
+    cursor: pointer;
+}
+
+.seek-slider {
+    width: 450px;
+    accent-color: #10b981;
+}
+/* Container tổng */
+.song-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Khoảng cách giữa các hàng */
+    padding: 10px 0;
+}
+
+/* Thẻ hàng ngang */
+.song-row-card {
+    display: flex;
+    align-items: center;
+    background-color: #212121; /* Màu xám đậm như ảnh */
+    padding: 12px 20px;
+    color: #e0e0e0;
+    transition: background 0.2s;
+}
+
+    .song-row-card:hover {
+        background-color: #2b2b2b; /* Hiệu ứng khi di chuột vào */
+    }
+
+/* Phần User */
+.user-info {
+    display: flex;
+    align-items: center;
+    width: 200px; /* Độ rộng cố định cho phần tên uploader */
+    gap: 15px;
+}
+
+.avatar-circle {
+    width: 24px;
+    height: 24px;
+    background-color: #9e9e9e; /* Màu xám avatar như thiết kế */
+    border-radius: 50%;
+}
+
+.full-name {
+    font-size: 15px;
+}
+
+/* Nút Theo dõi */
+.follow-btn {
+    background: transparent;
+    border: none;
+    color: #b0b0b0;
+    font-size: 15px;
+    margin-right: 50px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Cột tên bài hát */
+.song-title-col {
+    flex: 1; /* Tự động giãn rộng nhất có thể */
+}
+
+.song-name {
+    font-size: 16px;
+}
+
+/* Chỉ số bên phải */
+.song-stats {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    color: #b0b0b0;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .stat i {
+        font-size: 18px;
+    }
+
+.comment-btn {
+    cursor: pointer;
+    margin-left: 10px;
+}
+/* Container chính cho trang Upload */
+.upload-page-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: white;
+}
+
+.upload-heading {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 40px;
+    color: white;
+}
+
+/* Cấu trúc Form */
+.custom-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.upload-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .upload-field label {
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    /* Style cho Input và Select tối màu */
+    .upload-field input[type="text"],
+    .upload-field select {
+        background-color: #2a2a2a; /* Màu xám đậm như ảnh */
+        border: 1px solid #3d3d3d;
+        padding: 12px 15px;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        width: 100%;
+        outline: none;
+    }
+
+    .upload-field input::placeholder {
+        color: #888;
+    }
+
+/* Nút Đăng Tải màu xanh Neon của sếp Hoàng */
+.upload-actions {
+    display: flex;
+    justify-content: flex-end; /* Đẩy nút sang bên phải */
+    margin-top: 20px;
+}
+
+.btn-submit-neon {
+    background-color: #39FF14; /* Màu xanh lá Neon rực rỡ */
+    color: black;
+    padding: 10px 45px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-submit-neon:hover {
+        background-color: #32CD32;
+        box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    }
+
+.alert-error {
+    color: #ff4d4d;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.main-feed-container {
+    padding: 20px 0;
+}
+
+.feed-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Khoảng cách nhỏ giữa các hàng */
+}
+
+/* THẺ NHẠC HÀNG NGANG */
+/* Khung chứa mỗi bài hát */
+.song-item-row {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px; /* Tăng từ 10px lên 15px-20px để hàng cao hơn */
+    margin-bottom: 30px; /* Khoảng cách giữa các bài hát */
+    background: transparent;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+    cursor: pointer;
+}
+
+    /* Hiệu ứng khi di chuột vào - làm rộng cảm giác không gian */
+    .song-item-row:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+/* Căn chỉnh từng cột */
+.col-uploader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 220px; /* Độ rộng cố định cho phần tên người đăng */
+    flex-shrink: 0;
+}
+
+.mini-avatar {
+    width: 28px;
+    height: 28px;
+    background-color: #555;
+    border-radius: 50%;
+}
+
+.uploader-name {
+    font-size: 14px;
+    color: #fff;
+}
+
+.col-action {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.follow-link {
+    background: transparent;
+    border: none;
+    color: #b3b3b3;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+    .follow-link:hover {
+        color: #10b981;
+    }
+
+.col-song-title {
+    flex: 1; /* Cột này sẽ chiếm hết phần trống ở giữa */
+    padding: 0 20px;
+}
+
+.song-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.col-stats {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 250px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    color: #b3b3b3;
+}
+
+.stat-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.comment-link {
+    margin-left: 10px;
+}
+/* Layout Admin */
+.admin-page-container {
+    padding: 10px;
+}
+
+.admin-sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.admin-nav-tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.tab-item {
+    text-decoration: none;
+    color: #b3b3b3;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+    .tab-item.active, .tab-item:hover {
+        color: white;
+        background: #333;
+    }
+
+.admin-search-bar {
+    display: flex;
+    background: #2a2a2a;
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+
+    .admin-search-bar input {
+        background: transparent;
+        border: none;
+        color: white;
+        outline: none;
+        padding: 5px;
+    }
+
+    .admin-search-bar button {
+        background: transparent;
+        border: none;
+        color: #b3b3b3;
+        cursor: pointer;
+    }
+
+/* Table Style */
+.hou-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #121212;
+}
+
+    .hou-admin-table th {
+        text-align: left;
+        color: #888;
+        font-size: 13px;
+        padding: 15px;
+        border-bottom: 1px solid #333;
+    }
+
+    .hou-admin-table td {
+        padding: 15px;
+        border-bottom: 1px solid #1a1a1a;
+        vertical-align: middle;
+    }
+
+.user-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-mini {
+    width: 35px;
+    height: 35px;
+    background: #444;
+    border-radius: 50%;
+}
+
+.user-fullname {
+    display: block;
+    font-weight: bold;
+    color: white;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #888;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-locked {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.btn-toggle {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-lock {
+    background: #333;
+    color: #ef4444;
+}
+
+.btn-unlock {
+    background: #10b981;
+    color: white;
+}
+.logout-link {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-size: 12px; /* Nhỏ hơn tên người dùng một chút để phân cấp */
+    transition: 0.3s;
+    padding: 4px 12px;
+    border-radius: 20px; /* Bo tròn nhẹ nhìn sẽ hiện đại hơn */
+}
+
+    .logout-link:hover {
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.1); /* Hiệu ứng nền mờ màu đỏ */
+        text-decoration: none; /* Đảm bảo không bị gạch chân khi hover */
+    }

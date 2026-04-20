@@ -36,5 +36,23 @@ namespace HOUConnect.Business.Services
             bool success = _songDAL.InsertSong(name, genreId, fileName, userId);
             return success ? "Success" : "Lỗi lưu dữ liệu!";
         }
+        public List<SongDTO> GetAllSongs()
+        {
+            DataTable dt = _songDAL.GetAllSongs();
+            List<SongDTO> list = new List<SongDTO>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                list.Add(new SongDTO
+                {
+                    SongID = Convert.ToInt32(dr["PK_iSongID"]),
+                    SongName = dr["sSongName"].ToString() ?? "",
+                    FullName = dr["UploaderName"].ToString() ?? "", // Tên người đăng lấy từ SQL JOIN
+                    FileUrl = "/uploads/" + dr["sFileUrl"].ToString(),
+                    CreatedAt = Convert.ToDateTime(dr["dUploadDate"])
+                });
+            }
+            return list;
+        }
     }
 }

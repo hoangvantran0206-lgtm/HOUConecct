@@ -1,51 +1,171 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HOUConnect.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HOUConnect.Web.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOU-Connect | Âm nhạc kết nối</title>
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">HOUConnect.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+<body class="dark-theme">
+    <div class="app-wrapper">
+        <div class="app-body">
+            <aside class="sidebar">
+                <div class="user-identity">
+                    @if (Context.Session.GetString("UserName") != null)
+                    {
+                        <div class="user-info-box">
+                            <span class="user-name">@Context.Session.GetString("UserName")</span>
+                            <a href="/Logout" class="logout-link">Đăng xuất</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="guest-box">
+                            <p>Chào bạn!</p>
+                            <a href="/Login" class="btn-login-hou">Đăng nhập</a>
+                        </div>
+                    }
+                </div>
+
+                <nav class="nav-menu">
+                    <a href="/Index" class="nav-link active"><i class="fa-solid fa-house"></i> Trang chủ</a>
+
+                    @if (Context.Session.GetString("UserName") != null)
+                    {
+                        <a href="/Upload" class="nav-link"><i class="fa-solid fa-plus"></i> Thêm nhạc</a>
+                    }
+                    <a href="/Playlist" class="nav-link"><i class="fa-solid fa-list"></i> Playlists</a>
+
+                    @if (Context.Session.GetInt32("UserRole") == 1)
+                    {
+                        <a href="/UserManagement" class="nav-link admin-tag"><i class="fa-solid fa-user-shield"></i> Quản trị</a>
+                    }
+                </nav>
+            </aside>
+
+            <main class="main-view">
+                <header class="header-bar">
+                    <div class="search-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Tìm kiếm âm nhạc..." />
+                    </div>
+                    <div class="brand-name">HOU-Connect</div>
+                </header>
+
+                <section class="scrollable-content">
+                    @RenderBody()
+                </section>
+            </main>
+        </div>
+
+        <footer class="player-bar">
+            <audio id="main-audio" src=""></audio>
+
+            <div class="song-details">
+                <div class="mini-thumb"></div>
+                <div class="meta">
+                    <div id="player-title" class="s-title">Đang chờ phát...</div>
+                    <div id="player-artist" class="s-artist">HOU-Connect</div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <div class="player-mid">
+                <div class="playback-btns">
+                    <i class="fa-solid fa-shuffle"></i>
+                    <i class="fa-solid fa-backward-step"></i>
+                    <i id="play-pause-btn" class="fa-solid fa-circle-play play-main"></i>
+                    <i class="fa-solid fa-forward-step"></i>
+                    <i class="fa-solid fa-repeat"></i>
+                </div>
+                <div class="progress-area">
+                    <span id="current-time">0:00</span>
+                    <input type="range" id="progress-bar" class="seek-slider" value="0" min="0" max="100" />
+                    <span id="total-duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="volume-side">
+                <i id="volume-icon" class="fa-solid fa-volume-high"></i>
+                <input type="range" id="volume-slider" class="vol-slider" min="0" max="1" step="0.1" value="1" />
+            </div>
+        </footer>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - HOUConnect.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    const audio = document.getElementById('main-audio');
+    const playBtn = document.getElementById('play-pause-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const playerTitle = document.getElementById('player-title');
+    const playerArtist = document.getElementById('player-artist');
+    const volumeSlider = document.getElementById('volume-slider');
+
+    // Hàm phát bài hát được chọn
+       function playSong(fileUrl, title, artist) {
+        console.log("Đang cố gắng phát file:", fileUrl); // Hoàng xem dòng này có hiện đúng link không
+
+        const audio = document.getElementById('main-audio');
+        const playBtn = document.getElementById('play-pause-btn');
+
+        if (!fileUrl) {
+            alert("Lỗi: Bài hát này chưa có file nhạc!");
+            return;
+        }
+
+        audio.src = fileUrl;
+        document.getElementById('player-title').innerText = title;
+        document.getElementById('player-artist').innerText = artist;
+
+        audio.play().catch(error => {
+            console.error("Lỗi phát nhạc:", error);
+            alert("Trình duyệt chặn hoặc file không tồn tại!");
+        });
+
+        playBtn.classList.replace('fa-circle-play', 'fa-circle-pause');
+    }
+
+    // Xử lý nút Play/Pause tại Player Bar
+    playBtn.onclick = () => {
+        if (audio.paused) {
+            audio.play();
+            playBtn.classList.replace('fa-circle-play', 'fa-circle-pause');
+        } else {
+            audio.pause();
+            playBtn.classList.replace('fa-circle-pause', 'fa-circle-play');
+        }
+    };
+
+    // Cập nhật thanh Progress Bar theo thời gian nhạc chạy
+    audio.ontimeupdate = () => {
+        if (audio.duration) {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = progress;
+
+            // Hiển thị phút:giây
+            document.getElementById('current-time').innerText = formatTime(audio.currentTime);
+            document.getElementById('total-duration').innerText = formatTime(audio.duration);
+        }
+    };
+
+    // Tua nhạc khi kéo thanh progress
+    progressBar.oninput = () => {
+        const seekTime = (progressBar.value / 100) * audio.duration;
+        audio.currentTime = seekTime;
+    };
+
+    // Điều chỉnh âm lượng
+    volumeSlider.oninput = () => {
+        audio.volume = volumeSlider.value;
+    };
+
+    function formatTime(seconds) {
+        let min = Math.floor(seconds / 60);
+        let sec = Math.floor(seconds % 60);
+        if (sec < 10) sec = `0${sec}`;
+        return `${min}:${sec}`;
+    }
+</script>

@@ -39,8 +39,8 @@ namespace HOUConnect.Web.Pages
                     await MusicFile.CopyToAsync(stream);
                 }
 
-                // Gọi Business (UserID tạm thời lấy từ Session hoặc mặc định 1)
-                _songService.ValidateAndUpload(SongName, SelectedGenreID, uniqueFileName, 1);
+                int? sessionUserId = HttpContext.Session.GetInt32("UserID");
+                _songService.ValidateAndUpload(SongName, SelectedGenreID, uniqueFileName, sessionUserId.Value);
                 return RedirectToPage("Index");
             }
             return Page();

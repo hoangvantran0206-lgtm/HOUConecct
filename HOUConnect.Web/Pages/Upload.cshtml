@@ -1,18 +1,46 @@
 ﻿@page
 @model HOUConnect.Web.Pages.UploadModel
 @{
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" asp-for="SongName" placeholder="Tên bài hát..." />
-
-        <select asp-for="SelectedGenreID">
-            <option value="0">-- Chọn thể loại --</option>
-            @foreach (var g in Model.Genres)
-            {
-                <option value="@g.GenreID">@g.GenreName</option>
-            }
-        </select>
-
-        <input type="file" asp-for="MusicFile" accept=".mp3" />
-        <button type="submit">Tải lên ngay</button>
-    </form>
+    ViewData["Title"] = "Thêm nhạc";
 }
+
+<div class="upload-page-container">
+    <h1 class="upload-heading">Thêm nhạc :</h1>
+
+    <form method="post" enctype="multipart/form-data" class="custom-upload-form">
+        <div class="upload-field">
+            <label>Tên bài hát:</label>
+            <input type="text" asp-for="SongName" placeholder="Nhập tên bài hát..." required />
+        </div>
+
+        <div class="upload-field">
+            <label>Thể Loại</label>
+            <select asp-for="SelectedGenreID">
+                <option value="0">-- Chọn thể loại --</option>
+                @if (Model.Genres != null)
+                {
+                    @foreach (var g in Model.Genres)
+                    {
+                        <option value="@g.GenreID">@g.GenreName</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="upload-field">
+            <label>Chọn file nhạc</label>
+            <div class="file-custom-input">
+                <input type="file" asp-for="MusicFile" accept=".mp3" required />
+            </div>
+        </div>
+
+        <div class="upload-actions">
+            <button type="submit" class="btn-submit-neon">Đăng Tải</button>
+        </div>
+
+        @if (ViewData["ErrorMessage"] != null)
+        {
+            <div class="alert-error">@ViewData["ErrorMessage"]</div>
+        }
+    </form>
+</div>
