@@ -123,3 +123,24 @@ BEGIN
     WHERE s.iStatus = 1 -- Chỉ lấy những bài hát đang hoạt động
     ORDER BY s.dUploadDate DESC;
 END
+--hỗ trợ tìm kiếm bài hát 
+ALTER PROCEDURE sp_GetAllSongs
+    @sSearchTerm NVARCHAR(100) = '' 
+AS
+BEGIN
+    SELECT 
+        s.PK_iSongID, 
+        s.sSongName, 
+        s.sFileUrl, 
+        u.sFullName AS UploaderName,
+        s.dUploadDate
+    FROM tbl_Songs s
+    INNER JOIN tbl_Users u ON s.FK_iUserID = u.PK_iUserID
+    WHERE s.iStatus = 1 
+      -- Phải dùng N để hỗ trợ tiếng Việt và % để tìm kiếm mẫu
+      AND (s.sSongName LIKE N'%' + ISNULL(@sSearchTerm, '') + '%' 
+           OR u.sFullName LIKE N'%' + ISNULL(@sSearchTerm, '') + '%')
+    ORDER BY s.dUploadDate DESC;
+END
+EXEC sp_GetAllSongs N'hoàng trần'
+sp_help sp_GetAllSongs

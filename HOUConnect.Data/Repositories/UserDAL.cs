@@ -56,7 +56,7 @@ namespace HOUConnect.Data.Repositories
             return _sqlHelper.ExecuteQuery("sp_GetUserByID", paras);
         }
 
-        public bool UpdateUserStatus(int userId, int newStatus)
+        public virtual bool UpdateUserStatus(int userId, int newStatus)
         {
             SqlParameter[] paras = {
         new SqlParameter("@iUserID", userId),

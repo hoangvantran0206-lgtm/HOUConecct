@@ -60,7 +60,21 @@ namespace HOUConnect.Tests
             // Assert: Trả về Success
             Assert.Equal("Success", result);
         }
+        /// <summary>
+        /// UT21: Kiểm tra mật khẩu chỉ chứa khoảng trắng hoặc bị dư thừa khoảng trắng
+        /// </summary>
+        [Fact]
+        public void CreateAccount_PasswordWithWhitespaces_ReturnsError()
+        {
+            // Arrange: Không cần mock DAL vì code sẽ bị chặn ngay ở tầng Logic
 
+            // Act: Nhập mật khẩu có nhiều khoảng trắng nhưng ký tự thật chỉ có 3 (123)
+            string passWithSpace = "  123  ";
+            var result = _userService.CreateAccount("Hoàng IT", "hoang@hou.edu.vn", passWithSpace);
+
+            // Assert: Hệ thống phải Trim đi và nhận ra mật khẩu này thực chất chỉ có 3 ký tự
+            Assert.Equal("Mật khẩu quá ngắn, vui lòng nhập trên 6 ký tự.", result);
+        }
         /// <summary>
         /// Kiểm tra xử lý đăng nhập khi tài khoản hoặc mật khẩu không tồn tại trong DB
         /// </summary>
@@ -101,8 +115,41 @@ namespace HOUConnect.Tests
             Assert.Equal("Nguyễn Văn Hoàng", result.FullName);
             Assert.Equal(1, result.UserID);
         }
+        /// <summary>
+        /// Kiểm tra tính năng chuẩn hóa Email: Chấp nhận cả email viết hoa
+        /// </summary>
+        [Fact]
+        public void CreateAccount_EmailUpperCaseHOU_ReturnsSuccess()
+        {
+            // Arrange: Giả lập DAL lưu thành công
+            _mockUserDAL.Setup(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .Returns(true);
 
-    
+            // Act: Nhập Email viết hoa hoàn toàn
+            string upperEmail = "NGUYENVANHOANG@HOU.EDU.VN";
+            var result = _userService.CreateAccount("Hoàng IT", upperEmail, "password123");
+
+            // Assert: Kết quả vẫn phải là Success vì code đã dùng ToLower()
+            Assert.Equal("Success", result);
+        }
+        /// <summary>
+        /// UT05: Kiểm tra trường hợp dữ liệu hợp lệ nhưng tầng Data (DAL) gặp lỗi lưu trữ
+        /// </summary>
+        [Fact]
+        public void CreateAccount_DALReturnsFalse_ReturnsGeneralError()
+        {
+            // 1. Arrange: Giả lập DAL trả về false (như kiểu lỗi kết nối SQL hoặc trùng khóa chính)
+            // It.IsAny<string>() nghĩa là: "Với bất kỳ chuỗi nào truyền vào..."
+            _mockUserDAL.Setup(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .Returns(false);
+
+            // 2. Act: Gọi hàm với dữ liệu "đẹp" (đúng domain @hou, pass > 6 ký tự)
+            var result = _userService.CreateAccount("Nguyễn Văn Hoàng", "hoang@hou.edu.vn", "password123");
+
+            // 3. Assert: Kiểm tra Service có bắt được lỗi từ DAL và báo lại cho người dùng không
+            Assert.Equal("Đã có lỗi xảy ra trong quá trình đăng ký.", result);
+        }
+
 
         /// <summary>
         /// Kiểm tra tính năng quản trị: Khóa hoặc mở tài khoản sinh viên
@@ -118,6 +165,23 @@ namespace HOUConnect.Tests
 
             // Assert: Trả về kết quả thành công
             Assert.True(result);
+        }
+        /// <summary>
+        /// UT22: Kiểm tra tính năng chuẩn hóa Email khi bị thừa khoảng trắng ở hai đầu
+        /// </summary>
+        [Fact]
+        public void CreateAccount_EmailWithWhitespaces_ReturnsSuccess()
+        {
+            // Arrange: Giả lập DAL luôn thành công
+            _mockUserDAL.Setup(x => x.RegisterUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .Returns(true);
+
+            // Act: Nhập Email có dấu cách ở đầu và cuối
+            string emailWithSpace = "  hoang@hou.edu.vn  ";
+            var result = _userService.CreateAccount("Hoàng IT", emailWithSpace, "password123");
+
+            // Assert: Hệ thống phải Trim đi và trả về Success
+            Assert.Equal("Success", result);
         }
     }
 }

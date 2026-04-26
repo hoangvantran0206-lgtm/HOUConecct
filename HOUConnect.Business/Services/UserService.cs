@@ -19,6 +19,8 @@ namespace HOUConnect.Business.Services
         }
         public string CreateAccount(string name, string email, string password)
         {
+            email = email?.Trim() ?? "";
+            password = password?.Trim() ?? "";
             // 1. Kiểm tra email có phải của HOU không
             if (!email.ToLower().EndsWith("@hou.edu.vn"))
             {
@@ -84,6 +86,8 @@ namespace HOUConnect.Business.Services
         }
         public UserDTO? CheckLogin(string email, string password)
         {
+            email = email?.Trim() ?? "";
+            password = password?.Trim() ?? "";
             // Gọi xuống DAL để thực thi Procedure
             DataTable dt = _userDAL.Login(email, password);
 
@@ -98,5 +102,11 @@ namespace HOUConnect.Business.Services
             }
             return null; // Đăng nhập thất bại
         }
+        public bool ChangeAccountStatus(int userId, int status)
+        {
+            // Gọi trực tiếp xuống DAL để cập nhật
+            return _userDAL.UpdateUserStatus(userId, status);
+        }
     }
+
 }
