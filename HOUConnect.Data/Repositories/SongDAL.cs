@@ -24,9 +24,19 @@ public class SongDAL
         };
         return _sqlHelper.ExecuteNonQuery("sp_InsertSong", paras) > 0;
     }
-    public DataTable GetAllSongs()
+    public virtual DataTable GetAllSongs(string search = "")
     {
-        // Không cần tham số vì chúng ta lấy tất cả bài hát công khai
-        return _sqlHelper.ExecuteQuery("sp_GetAllSongs", null);
+        // Nếu search null thì gán rỗng, SQL sẽ lấy hết. Nếu có chữ "em", nó sẽ lọc.
+        search = search ?? "";
+
+        SqlParameter[] paras = new SqlParameter[]
+        {
+        // Tên này phải GIỐNG HỆT tên trong Procedure (đã xác định là @sSearchTerm)
+        new SqlParameter("@sSearchTerm", search)
+        };
+
+        // QUAN TRỌNG: Sếp nhìn kỹ xem có chữ ", paras" ở cuối không? 
+        // Thiếu cái này là SQL nó không nhận được chữ sếp gõ đâu!
+        return _sqlHelper.ExecuteQuery("sp_GetAllSongs", paras);
     }
 }

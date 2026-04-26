@@ -14,7 +14,7 @@ namespace HOUConnect.Data.Repositories
             _sqlHelper = sqlHelper;
         }
 
-        public bool RegisterUser(string fullName, string email, string password)
+        public virtual bool RegisterUser(string fullName, string email, string password)
         {
             // Thiết lập các tham số cho Stored Procedure
             SqlParameter[] parameters = new SqlParameter[]
@@ -30,7 +30,7 @@ namespace HOUConnect.Data.Repositories
             // Nếu số dòng bị tác động > 0 nghĩa là đã chèn thành công
             return rowsAffected > 0;
         }
-        public DataTable GetUserByEmail(string email)
+        public virtual DataTable GetUserByEmail(string email)
         {
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -64,7 +64,7 @@ namespace HOUConnect.Data.Repositories
     };
             return _sqlHelper.ExecuteNonQuery("sp_UpdateUserStatus", paras) > 0;
         }
-        public DataTable Login(string email, string password)
+        public virtual DataTable Login(string email, string password)
         {
             // Sử dụng SqlParameter để chống SQL Injection (rất quan trọng cho bảo mật!)
             SqlParameter[] paras = {

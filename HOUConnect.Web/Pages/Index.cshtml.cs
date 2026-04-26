@@ -3,20 +3,26 @@ using HOUConnect.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HOUConnect.Web.Pages
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly SongService _songService;
+
+    // Sếp đổi tên từ 'Songs' thành 'ListSongs' cho giống file .cshtml nhé
+    public List<SongDTO> ListSongs { get; set; } = new List<SongDTO>();
+
+    [BindProperty(Name = "searchString", SupportsGet = true)] // Thêm Name="..." cho chắc cú
+    public string? SearchString { get; set; }
+
+    public IndexModel(SongService songService)
     {
-        private readonly SongService _songService;
-        public IndexModel(SongService songService) => _songService = songService;
+        _songService = songService;
+    }
 
-        // Danh sách bài hát hiển thị trên Feed
-        public List<SongDTO> ListSongs { get; set; } = new();
+    public void OnGet()
+    {
+        ViewData["CurrentFilter"] = SearchString;
 
-        public void OnGet()
-        {
-            // Luôn cho phép vào trang chủ, không kiểm tra Session Redirect ở đây
-            ListSongs = _songService.GetAllSongs();
-        }
+        // Đổ dữ liệu vào ĐÚNG cái biến mà file .cshtml đang hiển thị
+        ListSongs = _songService.GetAllSongs(SearchString ?? "");
     }
 }

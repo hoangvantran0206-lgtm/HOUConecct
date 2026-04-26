@@ -49,9 +49,13 @@
                 <header class="header-bar">
                     <div class="search-wrap">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Tìm kiếm âm nhạc..." />
+                        <form method="get" asp-page="/Index">
+                            <input type="text"
+                                   name="searchString" 
+                                   placeholder="Tìm kiếm âm nhạc "
+                                   value="@ViewData["CurrentFilter"]" />
+                        </form>
                     </div>
-                    <div class="brand-name">HOU-Connect</div>
                 </header>
 
                 <section class="scrollable-content">
