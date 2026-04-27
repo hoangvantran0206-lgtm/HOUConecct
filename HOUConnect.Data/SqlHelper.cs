@@ -12,6 +12,10 @@ namespace HOUConnect.Data
         {
             _connString = config.GetConnectionString("DefaultConnection");
         }
+        public SqlHelper(string connString)
+        {
+            _connString = connString;
+        }
 
         // Dùng cho INSERT, UPDATE, DELETE
         public int ExecuteNonQuery(string spName, SqlParameter[] paras)

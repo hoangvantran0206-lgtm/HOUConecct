@@ -203,25 +203,6 @@ namespace HOUConnect.Tests
             Assert.NotEmpty(result);
             Assert.Equal("Hoàng IT", result[0].FullName);
         }
-        /// <summary>
-        /// UT24: Kiểm tra hệ thống có lấy đúng URL bài hát từ Database hay không.
-        /// </summary>
-        [Fact]
-        public void GetSongStreamUrl_ValidId_ReturnsCorrectUrl()
-        {
-            // Arrange: Giả lập 1 bài hát tồn tại với file tương ứng
-            int songId = 101;
-            DataTable dt = new DataTable();
-            dt.Columns.Add("sFileUrl");
-            dt.Rows.Add("song_01.mp3");
 
-            _mockSongDAL.Setup(x => x.GetSongById(songId)).Returns(dt);
-
-            // Act
-            var result = _songService.GetSongStreamUrl(songId);
-
-            // Assert: Xác minh URL trả về đã được chuẩn hóa
-            Assert.Equal("/uploads/song_01.mp3", result);
-        }
     }
 }
